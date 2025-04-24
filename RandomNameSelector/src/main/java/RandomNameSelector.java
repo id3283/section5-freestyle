@@ -3,13 +3,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.awt.Toolkit;
 
 public class RandomNameSelector {
 
     // Animation and style constants
-    private static final int MIN_DELAY_MS = 10;
-    private static final int MAX_DELAY_MS = 300;
+    private static final int MIN_DELAY_MS = 5;
+    private static final int MAX_DELAY_MS = 350;
     private static final int MAX_CYCLES = 50;
+    private static final double EXPONENT = 2.5;  // Higher = steeper slowdown
+
     private static final String ANSI_BOLD = "\u001B[1m";
     private static final String ANSI_BLINK = "\u001B[5m";
     private static final String ANSI_RESET = "\u001B[0m";
@@ -31,7 +34,6 @@ public class RandomNameSelector {
         }
 
         int maxNameLength = allowed.stream().mapToInt(String::length).max().orElse(0);
-
         Random random = new Random();
         String currentName = "";
 
@@ -41,8 +43,11 @@ public class RandomNameSelector {
             System.out.print('\r' + padded);
             System.out.flush();
 
-            int delay = MIN_DELAY_MS + (int) ((MAX_DELAY_MS - MIN_DELAY_MS)
-                    * Math.log(1 + i) / Math.log(1 + MAX_CYCLES));
+            // Play click sound (system beep)
+            Toolkit.getDefaultToolkit().beep();
+
+            double progress = (double) i / MAX_CYCLES;
+            int delay = MIN_DELAY_MS + (int) ((MAX_DELAY_MS - MIN_DELAY_MS) * Math.pow(progress, EXPONENT));
 
             try {
                 Thread.sleep(delay);
@@ -51,7 +56,7 @@ public class RandomNameSelector {
             }
         }
 
-        // Print the final name with bold and blink ANSI formatting
+        // Final name in bold and blinking ANSI formatting
         String finalName = ANSI_BOLD + ANSI_BLINK + currentName + ANSI_RESET;
         System.out.println('\r' + finalName);
     }
