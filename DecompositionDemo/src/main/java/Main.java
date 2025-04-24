@@ -18,6 +18,7 @@ public class Main {
 
     private static ArrayList<Employee> loadEmployees(String filePath) {
         ArrayList<Employee> employees = new ArrayList<>();
+
         try {
             FileReader reader = new FileReader(filePath);
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -28,12 +29,17 @@ public class Main {
                 if(parts[0].equals("id")) {
                     continue;
                 }
-                Employee newEmployee = new Employee(Integer.parseInt(parts[0]), parts[1], Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                double hoursWorked = Double.parseDouble(parts[2]);
+                double payRate = Double.parseDouble(parts[3]);
+                Employee newEmployee = new Employee(id, name, hoursWorked, payRate);
                 employees.add(newEmployee);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return employees;
     }
 }
