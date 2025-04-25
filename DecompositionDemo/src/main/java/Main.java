@@ -5,17 +5,23 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+//        String filePath = "/Users/dave/pluralsight/DataFiles/employees.csv";
         String filePath = "src/main/resources/employees.csv";
 
         ArrayList<Employee> employees = loadEmployees(filePath);
-
-        writePayroll(employees);
+        System.out.println("Number of employees: " + employees.size());
+//        writePayroll(employees);
     }
 
     private static void writePayroll(ArrayList<Employee> employees) {
         System.out.println("Number of employees: " + employees.size());
     }
 
+    /**
+     * This method reads the file specified by filePath into an ArrayList of Employee objects.
+     * @param filePath the relative path to the employee CSV file.
+     * @return An ArrayList of employee objects.
+     */
     private static ArrayList<Employee> loadEmployees(String filePath) {
         ArrayList<Employee> employees = new ArrayList<>();
 
